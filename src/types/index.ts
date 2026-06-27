@@ -21,9 +21,39 @@ export interface GitHubData {
   avatar_url: string;
 }
 
+export interface RoastScores {
+  codeQuality: number;
+  commitConsistency: number;
+  documentationScore: number;
+  creativityScore: number;
+  overallRoastScore: number;
+}
+
+export interface RoastResponse {
+  roast: string;
+  scores: RoastScores;
+  verdict: string;
+}
+
 export interface RoastResult {
   githubData: GitHubData;
   roast: string;
+  scores: RoastScores;
+  verdict: string;
+}
+
+export interface RoastHistory {
+  username: string;
+  avatar: string;
+  roast: string;
+  intensity: number;
+  date: string;
+  stats: {
+    repos: number;
+    stars: number;
+    followers: number;
+    topLanguage: string;
+  };
 }
 
 export type RoastErrorType =
@@ -37,3 +67,5 @@ export interface RoastError {
   type: RoastErrorType;
   message: string;
 }
+
+export type VoteChoice = 'self' | 'friend' | null;

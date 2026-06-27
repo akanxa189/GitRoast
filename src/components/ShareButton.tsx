@@ -1,32 +1,42 @@
 import { useState } from 'react';
-import html2canvas from 'html2canvas';
+import confetti from 'canvas-confetti';
+import { captureCardAsImage } from '../utils/captureCard';
 
 interface ShareButtonProps {
   cardRef: React.RefObject<HTMLDivElement | null>;
   username: string;
+  onShareSuccess?: () => void;
 }
 
-export function ShareButton({ cardRef, username }: ShareButtonProps) {
+export function ShareButton({
+  cardRef,
+  username,
+  onShareSuccess,
+}: ShareButtonProps) {
   const [sharing, setSharing] = useState(false);
 
   const handleShare = async () => {
-    if (!cardRef.current || sharing) return;
+    const element = cardRef.current;
+    if (!element || sharing) return;
+
     setSharing(true);
 
     try {
-      const canvas = await html2canvas(cardRef.current, {
-        backgroundColor: '#111111',
-        scale: 2,
-        useCORS: true,
-        logging: false,
+      await captureCardAsImage(element, `github-roast-${username}.png`);
+
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+        colors: ['#f97316', '#ef4444', '#fbbf24', '#4ade80'],
       });
 
-      const link = document.createElement('a');
-      link.download = `github-roast-${username}.png`;
-      link.href = canvas.toDataURL('image/png');
-      link.click();
-    } catch {
-      alert('Failed to capture image. Try again.');
+      onShareSuccess?.();
+    } catch (err) {
+      console.error('Share as image failed:', err);
+      alert(
+        'Failed to capture image. Try again — make sure your avatar has finished loading.',
+      );
     } finally {
       setSharing(false);
     }

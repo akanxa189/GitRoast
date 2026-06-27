@@ -87,3 +87,83 @@ body {
   );
   pointer-events: none;
 }
+
+.terminal-cursor-green::after {
+  content: '▋';
+  animation: blink 1s step-end infinite;
+  color: #4ade80;
+}
+
+.avatar-skeleton {
+  background: linear-gradient(
+    90deg,
+    #1a1a1a 25%,
+    #2a2a2a 50%,
+    #1a1a1a 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+.fire-particles {
+  position: absolute;
+  inset: -20px;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+  border-radius: 1rem;
+}
+
+.fire-particles::before,
+.fire-particles::after {
+  content: '';
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #f97316;
+  opacity: 0;
+  animation: fire-float 4s ease-in-out infinite;
+}
+
+.fire-particles::before {
+  left: 20%;
+  bottom: 10%;
+  animation-delay: 0s;
+}
+
+.fire-particles::after {
+  right: 25%;
+  bottom: 15%;
+  animation-delay: 2s;
+  width: 4px;
+  height: 4px;
+  background: #ef4444;
+}
+
+@keyframes fire-float {
+  0%,
+  100% {
+    opacity: 0;
+    transform: translateY(0) scale(1);
+  }
+  10% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 0.3;
+    transform: translateY(-80px) scale(0.5);
+  }
+  90% {
+    opacity: 0;
+  }
+}
